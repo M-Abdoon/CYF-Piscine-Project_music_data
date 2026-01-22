@@ -4,5 +4,8 @@
   "main": "script.js",
   "scripts": {
     "test": "node common.test.mjs"
+  },
+  "dependencies": {
+    "test": "^3.3.0"
   }
 }
