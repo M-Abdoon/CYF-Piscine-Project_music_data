@@ -25,10 +25,10 @@ function setup () {
 	userSelectEl.addEventListener("change", () => {
 		const selectedUser = userSelectEl.value;
 
-		answer1El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer2El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
-		answer3El.textContent = getSong(getMostListenedSong(selectedUser, "Friday", "17")).artist;
-		answer3El.textContent += ` - ${ getSong(getMostListenedSong(selectedUser, "Friday", "17")).title }`;
+		//answer1El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		//answer2El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
+		answer3El.textContent = getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).artist;
+		//answer3El.textContent += ` - ${ getSong(getMostListenedSong(selectedUser, "Friday", "17-05")).title }`;
 
 		// answer4El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 		// answer5El.textContent = getSong(getMostListenedSong(selectedUser)).title;
@@ -52,37 +52,38 @@ function timestampToHour(timestamp) {
 	return new Date(timestamp).getHours();
 }
 
+function nextDay(currentDay) {
+	const days = ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"];
+	return days[(days.indexOf(currentDay) + 1) % days.length];
+}
 function getMostListenedSong(userId, dayWeek, hours) {
 	let allUserSongs = getListenEvents(userId);
-	let counts = [];
-	let countByDay = dayWeek? true : false;
-	let countByHour= hours? true : false;
-	let newSongsArray = [];
+	let counts = {};
 	let i = 0;
 
-	if (countByDay === true && countByHour === true) {
-		
-		allUserSongs.forEach(song => {
-			if (timestampToDayName(song.timestamp) === dayWeek &&
-				timestampToHour(song.timestamp) >= hours)
-				console.log(`timestamp: ${timestampToHour(song.timestamp)} 
-				hours: ${hours}`);
-		});
+	if (dayWeek && hours) {
+	hours = hours.split("-").map(Number);
 
-		// allUserSongs = allUserSongs.filter(song => 
-		// 	(timestampToDayName(song.timestamp) === dayWeek
-		// ));
+	allUserSongs = allUserSongs.filter(song => {
+		const date = new Date(song.timestamp);
+		const hour = date.getHours();
+		const minute = date.getMinutes();
+		const totalMinutes = hour * 60 + minute;
+		const start = hours[0] * 60;
+		const end = hours[1] * 60;
+		const day = timestampToDayName(song.timestamp);
 
-	}
+		return (day === dayWeek && totalMinutes >= start) ||
+		       (day === nextDay(dayWeek) && totalMinutes < end); 
+	});
+}
 
-	// if (countByHour === true) {
-	// 	allUserSongs = allUserSongs.filter(song => timestampToHour(song.timestamp) === countByHour);
-	// }
-
-	console.log(allUserSongs);
+	console.log((allUserSongs));
+	
 	allUserSongs.forEach(song => {
 		counts[song.song_id] = (counts[song.song_id] || 0) + 1;
 	})
+
 
 	let max = 0;
 	let maxSong = null;
@@ -96,4 +97,4 @@ function getMostListenedSong(userId, dayWeek, hours) {
 	return maxSong;
 }
 
-window.onload = setup ();
+window.onload = setup;
