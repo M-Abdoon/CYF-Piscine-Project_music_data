@@ -25,16 +25,22 @@ function setup () {
 	userSelectEl.addEventListener("change", () => {
 		const selectedUser = userSelectEl.value;
 
-		answer1El.textContent = getMostListenedSong(selectedUser);
-		answer2El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer3El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer4El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer5El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer6El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		answer7El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		answer1El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		answer2El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
+		// answer3El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		// answer4El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		// answer5El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		// answer6El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		// answer7El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 
+		
+		console.log(getListenEvents(1));
+		console.log(timestampToDayName("2024-08-01T00:20:07"));
 
 	});
+}
+function timestampToDayName(timestamp) {
+	return new Date(timestamp).toLocaleDateString("en-UK", { weekday: "long"});
 }
 
 function getMostListenedSong(userId) {
