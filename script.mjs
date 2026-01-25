@@ -75,15 +75,12 @@ function getMostListenedSong(userId, dayWeek, hours) {
 
 		return (day === dayWeek && totalMinutes >= start) ||
 		       (day === nextDay(dayWeek) && totalMinutes < end); 
-	});
-}
-
-	console.log((allUserSongs));
+		});
+	}
 	
 	allUserSongs.forEach(song => {
 		counts[song.song_id] = (counts[song.song_id] || 0) + 1;
 	})
-
 
 	let max = 0;
 	let maxSong = null;
