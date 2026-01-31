@@ -25,11 +25,15 @@ function setup () {
 	userSelectEl.addEventListener("change", () => {
 		const selectedUser = userSelectEl.value;
 
-		//answer1El.textContent = getSong(getMostListenedSong(selectedUser)).title;
-		//answer2El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
-		answer3El.textContent = getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).artist;
-		//answer3El.textContent += ` - ${ getSong(getMostListenedSong(selectedUser, "Friday", "17-05")).title }`;
+		answer1El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
+		answer1El.textContent += ` - ${getSong(getMostListenedSong(selectedUser)).title}`;
 
+		answer2El.textContent = getSong(getMostListenedSong(selectedUser)).artist;
+		answer2El.textContent = `${getSong(getMostListenedSong(selectedUser)).title}`;
+		
+		answer3El.textContent = getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).artist;
+		answer3El.textContent += ` - ${getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).title}`;
+	
 		// answer4El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 		// answer5El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 		// answer6El.textContent = getSong(getMostListenedSong(selectedUser)).title;
@@ -85,12 +89,16 @@ function getMostListenedSong(userId, dayWeek, hours) {
 	let max = 0;
 	let maxSong = null;
 
+	console.log(Object.keys(counts));
+	console.log(counts);
 	for ( const id in counts) {
 		if(counts[id] > max) {
 			max = counts[id];
 			maxSong = id;
 		}
 	}
+	
+	console.log(maxSong)
 	return maxSong;
 }
 
