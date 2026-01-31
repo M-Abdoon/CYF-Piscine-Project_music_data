@@ -33,7 +33,7 @@ function setup () {
 		answer3El.textContent = getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).artist;
 		answer3El.textContent += ` - ${getSong(getMostListenedSong(selectedUser, "Friday", "17-04")).title}`;
 	
-		// answer4El.textContent = getSong(getMostListenedSong(selectedUser)).title;
+		answer4El.textContent = getSong(getSongListenedByTime(selectedUser)).title;
 		// answer5El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 		// answer6El.textContent = getSong(getMostListenedSong(selectedUser)).title;
 		// answer7El.textContent = getSong(getMostListenedSong(selectedUser)).title;
@@ -43,20 +43,22 @@ function setup () {
 		//console.log(new Date("2024-08-01T00:21:07").getHours());
 		//console.log(getListenEvents(1));
 
-		console.log(getSongListenedByTime("1"));
 	});
 }
 
 function getSongListenedByTime(userId) {
 	let data = getListenEvents(userId);
-	let maxListenTimeSong = {null:0};
+	let maxSong = null;
+	let maxTime = 0;
 
 	data.forEach(song => {
-		if(song.seconds_since_midnight > Object.values(maxListenTimeSong)[0]) {
-			maxListenTimeSong = {[song.song_id] : song.seconds_since_midnight}
+		if(song.seconds_since_midnight > maxTime) {
+			maxTime = song.seconds_since_midnight;
+			maxSong = song.song_id;
+			console.log(maxTime);
 		}
 	});
-	return Object.keys(maxListenTimeSong)[0];
+	return maxSong;
 }
 
 function timestampToDayName(timestamp) {
